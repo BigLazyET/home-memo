@@ -1,7 +1,74 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-void main() {
-  runApp(const MyApp());
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:home_memo/constants.dart';
+import 'package:home_memo/defines/colors.dart';
+import 'package:home_memo/pages/test/my_home_page.dart';
+import 'package:home_memo/utils/localize_util.dart';
+import 'package:home_memo/utils/log/log_util.dart';
+import 'package:localization/localization.dart';
+
+import 'global.dart';
+
+const bool isOpenDoKit = false; //todo 日志开关
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // 全局framework异常捕获
+  FlutterError.onError = (FlutterErrorDetails details) {
+    LogUtil.e('FlutterErrorDetails异常捕获: “${details.toString()}"');
+  };
+
+  // 设置状态栏模式，Android有效，iOS需要设置info.plist
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(statusBarColor: AppColors.transparent));
+  // 设置屏幕方向
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
+  // 初始化数据
+  await _initData();
+
+  // 运行
+  await _runApp();
+}
+
+_initData() async {
+  // 本地化
+  LogUtil.i('本地化设置');
+  LocalJsonLocalization.delegate.directories = ['lib/i18n'];
+  await ScreenUtil.ensureScreenSize();
+  // TODO: jsbridge
+}
+
+_runApp() async {
+  if (isOpenDoKit) {
+    // await DoKit.runApp(
+    //   appCreator: () async {
+    //     return DoKitApp(const MyApp());
+    //   },
+    //   // 是否在release包内使用，默认release包会禁用
+    //   useInRelease: true,
+    //   // 选择性控制是否使用dokit中的runZonedGuarded,false: 禁用；true: 启用
+    //   useRunZoned: true,
+    //   // 调用print方法打印日志时被回调
+    //   logCallback: (_) {},
+    //   // 过滤方法通道的黑名单
+    //   methodChannelBlackList: [],
+    //   // release模式下执行该函数，该值为空则会直接调用系统的runApp
+    //   releaseAction: () async {},
+    //   // 异常回调
+    //   // exceptionCallback: (dynamic object, StackTrace stack) {
+    //   //   LogUtil.e("代码异常捕获 object: $object \nstack: $stack");
+    //   // },
+    // );
+  } else {
+    runZonedGuarded(() => runApp(const MyApp()), (error, stack) {
+      LogUtil.e("代码异常捕获 error: $error \nstack: $stack");
+    });
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -10,106 +77,40 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+    return ScreenUtilInit(
+        designSize: const Size(375, 812), //设计稿中设备的尺寸(单位随意,建议dp,但在使用过程中必须保持一致)
+        minTextAdapt: true, //是否根据宽度/高度中的最小值适配文字
+        splitScreenMode: true, //支持分屏尺寸
+        builder: (_, child) => MaterialApp(
+              // 本地化
+              localizationsDelegates: [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+                LocalJsonLocalization.delegate
+              ],
+              supportedLocales: const [
+                Locale('en', 'US'),
+                Locale('zh', 'CN')
+                //Locale.fromSubtags(languageCode: 'zh', countryCode: 'CN', scriptCode: 'Hans') // zh_Hans_CN.json
+              ],
+              localeResolutionCallback: (locale, supportedLocales) {
+                if (supportedLocales.contains(locale)) {
+                  return locale;
+                } else {
+                  for (var supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale!.languageCode) {
+                      return supportedLocale;
+                    }
+                  }
+                }
+              },
+              title: LocalUtil.get(AppLocalKeys.appTitle),
+              navigatorKey: appNavigatorKey,
+              theme: ThemeData(
+                primarySwatch: Colors.blue,
+              ),
+              home: MyHomePage(title: '${LocalUtil.get(AppLocalKeys.appTitle)} Home Page'),
+            ));
   }
 }
