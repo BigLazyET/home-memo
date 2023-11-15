@@ -28,4 +28,38 @@ abstract class PageState<T extends StatefulPageWidget> extends State<T>
     super.didChangeDependencies();
     routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
   }
+
+  @override
+  void didPopNext() {
+    super.didPopNext();
+  }
+
+  @override
+  void didPushNext() {
+    super.didPushNext();
+  }
+
+  @override
+  void didPop() {
+    // TODO: implement didPop
+    super.didPop();
+  }
+
+  @override
+  void didPush() {
+    // TODO: implement didPush
+    super.didPush();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO: implement didChangeAppLifecycleState
+    super.didChangeAppLifecycleState(state);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 }

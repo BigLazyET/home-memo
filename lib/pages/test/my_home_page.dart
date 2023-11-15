@@ -1,3 +1,4 @@
+import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:home_memo/utils/localize_util.dart';
 
@@ -76,6 +77,13 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            ElevatedButton(
+                onPressed: () {
+                  Add2Calendar.addEvent2Cal(
+                    buildEvent(),
+                  );
+                },
+                child: const Text('添加事件到系统日历'))
           ],
         ),
       ),
@@ -84,6 +92,25 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  Event buildEvent({Recurrence? recurrence}) {
+    return Event(
+      title: 'Test eventeee',
+      description: 'example',
+      location: 'Flutter app',
+      startDate: DateTime.now(),
+      endDate: DateTime.now().add(Duration(minutes: 30)),
+      allDay: false,
+      iosParams: IOSParams(
+        reminder: Duration(minutes: 40),
+        url: "http://example.com",
+      ),
+      androidParams: AndroidParams(
+        emailInvites: ["test@example.com"],
+      ),
+      recurrence: recurrence,
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:home_memo/constants.dart';
 import 'package:home_memo/defines/colors.dart';
+import 'package:home_memo/pages/splash_page.dart';
 import 'package:home_memo/pages/test/my_home_page.dart';
 import 'package:home_memo/utils/localize_util.dart';
 import 'package:home_memo/utils/log/log_util.dart';
@@ -104,13 +105,44 @@ class MyApp extends StatelessWidget {
                     }
                   }
                 }
+                return null;
               },
               title: LocalUtil.get(AppLocalKeys.appTitle),
               navigatorKey: appNavigatorKey,
               theme: ThemeData(
                 primarySwatch: Colors.blue,
               ),
-              home: MyHomePage(title: '${LocalUtil.get(AppLocalKeys.appTitle)} Home Page'),
+              home: const SplashPage(),
+              builder: (context, child) {
+                return Overlay(initialEntries: [
+                  if (child != null) ...[
+                    // ...用来拼接集合
+                    OverlayEntry(builder: (context) {
+                      AppInfo.screenWidth = ScreenUtil().screenWidth;
+                      AppInfo.screenHeight = ScreenUtil().screenHeight;
+                      AppInfo.safeTopHeight = MediaQuery.of(context).padding.top;
+                      AppInfo.safeBottomHeight = MediaQuery.of(context).padding.bottom;
+                      AppInfo.devicePixelRatio =
+                          MediaQuery.of(context).devicePixelRatio <= 0 ? 1 : MediaQuery.of(context).devicePixelRatio;
+
+                      return MediaQuery(
+                          // 设置文字大小不随系统设置改变
+                          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              // 全局点击空白区域关闭键盘
+                              var currentFocus = FocusScope.of(context);
+                              if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+                                FocusManager.instance.primaryFocus?.unfocus();
+                              }
+                            },
+                            child: child,
+                          ));
+                    })
+                  ]
+                ]);
+              },
+              //home: MyHomePage(title: '${LocalUtil.get(AppLocalKeys.appTitle)} Home Page'),
             ));
   }
 }
