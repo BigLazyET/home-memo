@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:home_memo/constants.dart';
-import 'package:home_memo/utils/net/remote_image.dart';
-import 'package:home_memo/utils/net/ssj_request_manager.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
