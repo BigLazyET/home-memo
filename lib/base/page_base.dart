@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 ///路由观察者
+///RouteObserver 是一个配合RouteAware的一个类，通过这个类可以通知到当前页面应该执行那种生命周期方法，否则只混入RouteAware是不能执行的
+///另外还有RouteObserver需要注册在MaterialApp中，这样才能在导航的过程中执行到对应的生命周期方法
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 abstract class StatelessPageWidget extends StatelessWidget {
@@ -41,25 +43,24 @@ abstract class PageState<T extends StatefulPageWidget> extends State<T>
 
   @override
   void didPop() {
-    // TODO: implement didPop
     super.didPop();
   }
 
   @override
   void didPush() {
-    // TODO: implement didPush
     super.didPush();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // TODO: implement didChangeAppLifecycleState
     super.didChangeAppLifecycleState(state);
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
+
+    routeObserver.unsubscribe(this);
+    WidgetsBinding.instance.removeObserver(this);
   }
 }

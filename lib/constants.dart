@@ -18,3 +18,7 @@ class AppInfo {
   // 设备像素比
   static double devicePixelRatio = 1;
 }
+
+class SharedPreferenceKeys {
+  static const String THEME_MODE = 'theme-mode';
+}

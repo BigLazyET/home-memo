@@ -16,9 +16,7 @@ class FlutterRouter {
 
   void addInterceptor(RouteInterceptorBase interceptor) => this.interceptor = interceptor;
 
-  void addPages(Map<String, FlutterPageBuilder> pages) {
-    allPages.addAll(pages);
-  }
+  void addPages(Map<String, FlutterPageBuilder> pages) => allPages.addAll(pages);
 
   bool isValidRoute(String routeName) => allPages.containsKey(routeName);
 
@@ -77,4 +75,68 @@ class FlutterRouter {
         opaque: opaque);
     return Navigator.of(context).push(route);
   }
+
+  Future<dynamic> pushReplacement(BuildContext context, String routeName,
+      {String? customName,
+      Map<String, dynamic>? params,
+      RouteTransitionType? transitionType,
+      RouteTransitionBuilder? transitionBuilder,
+      Duration transitionDuration = defaultTransitionDuration,
+      bool? opaque}) async {
+    if (!isValidRoute(routeName)) {
+      return Future.value();
+    }
+    if (interceptor != null) {
+      var isValid = await interceptor!.willPush(context, routeName, customName: customName, params: params);
+      if (!isValid) {
+        return Future.value();
+      }
+    }
+
+    var route = _buildRoute(routeName,
+        params: params,
+        transitionType: transitionType,
+        transitionBuilder: transitionBuilder,
+        transitionDuration: transitionDuration,
+        opaque: opaque);
+    return Navigator.of(context).pushReplacement(route);
+  }
+
+  Future<dynamic> pushAndRemoveUntil(BuildContext context, String routeName, RoutePredicate predicate,
+      {String? customName,
+      Map<String, dynamic>? params,
+      RouteTransitionType? transitionType,
+      RouteTransitionBuilder? transitionBuilder,
+      Duration transitionDuration = defaultTransitionDuration,
+      bool? opaque}) async {
+    if (!isValidRoute(routeName)) {
+      return Future.value();
+    }
+    if (interceptor != null) {
+      var isValid = await interceptor!.willPush(context, routeName, customName: customName, params: params);
+      if (!isValid) {
+        return Future.value();
+      }
+    }
+
+    var route = _buildRoute(routeName,
+        params: params,
+        transitionType: transitionType,
+        transitionBuilder: transitionBuilder,
+        transitionDuration: transitionDuration,
+        opaque: opaque);
+    return Navigator.of(context).pushAndRemoveUntil(route, predicate);
+  }
+
+  void pop(BuildContext context, {Map<String, dynamic>? result}) {
+    if (Navigator.of(context).canPop()) {
+      Navigator.of(context).pop(result);
+    }
+  }
+
+  void popUntil(BuildContext context, String routeName) {
+    Navigator.of(context).popUntil((route) => route.settings.name == routeName);
+  }
+
+  void removePage(BuildContext context, String routeName) {}
 }
