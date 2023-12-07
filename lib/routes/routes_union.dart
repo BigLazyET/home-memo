@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:home_memo/pages/main/main_page.dart';
 import 'package:home_memo/pages/splash_page.dart';
 
 class RoutesUnion {
@@ -16,9 +17,8 @@ class RoutesUnion {
 
   // 路由集合
   static Map<String, FlutterPageBuilder> map = {
-    SPLASH_PAGE: (params) {
-      return const SplashPage();
-    }
+    SPLASH_PAGE: (params) => const SplashPage(),
+    MAIN_PAGE: (params) => MainPage()
   };
 }
 

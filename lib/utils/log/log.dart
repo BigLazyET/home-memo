@@ -1,8 +1,10 @@
+import 'dart:js_util';
+
 import 'package:home_memo/utils/log/log_builder.dart';
 import 'package:logger/logger.dart';
 
 class Log {
-  static final List<Logger> _loggers = [];
+  static final Map<LogOutput, Logger> _loggers = {};
 
   Log(
       {required Level level,
@@ -10,8 +12,9 @@ class Log {
       required LogPrinter logPrinter,
       required List<LogOutput> logOutputs}) {
     _loggers.clear();
+    level = level;
     for (var logOutput in logOutputs) {
-      _loggers.add(Logger(level: level, filter: logFilter, printer: logPrinter, output: logOutput));
+      _loggers.addAll({logOutput: Logger(level: level, filter: logFilter, printer: logPrinter, output: logOutput)});
     }
   }
 
@@ -19,40 +22,46 @@ class Log {
     return LogBuilder();
   }
 
-  static void LogCommon(dynamic message) {}
+  ///只打印到控制台
+  void n(dynamic message) {
+    LogOutput? logOutput = _loggers.keys.whereType<ConsoleOutput>().firstOrNull;
+    if (logOutput == null) return;
+    var logger = _loggers[logOutput]!;
+    logger.i(message);
+  }
 
   void v(dynamic message) {
-    for (var logger in _loggers) {
+    for (var logger in _loggers.values) {
       logger.v(message);
     }
   }
 
   void d(dynamic message) {
-    for (var logger in _loggers) {
+    for (var logger in _loggers.values) {
       logger.d(message);
     }
   }
 
   void i(dynamic message) {
-    for (var logger in _loggers) {
+    for (var logger in _loggers.values) {
       logger.i(message);
     }
   }
 
   void w(dynamic message) {
-    for (var logger in _loggers) {
+    for (var logger in _loggers.values) {
       logger.w(message);
     }
   }
 
   void e(dynamic message) {
-    for (var logger in _loggers) {
+    for (var logger in _loggers.values) {
       logger.e(message);
     }
   }
 
   void f(dynamic message) {
-    for (var logger in _loggers) {
+    for (var logger in _loggers.values) {
       logger.f(message);
     }
   }

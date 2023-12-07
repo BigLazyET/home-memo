@@ -6,7 +6,11 @@ class LogUtil {
   //   printer: PrefixPrinter(PrettyPrinter()),
   // );
 
-  static final Log _logger = Log.CreateBuilder().withLogPrinter(PrettyPrinter(colors: false)).Build();
+  static final Log _logger = Log.CreateBuilder().withLogPrinter(PrettyPrinter(colors: true)).Build();
+
+  static void n(dynamic message) {
+    _logger.n(message);
+  }
 
   static void v(dynamic message) {
     _logger.v(message);

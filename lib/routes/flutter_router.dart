@@ -11,16 +11,16 @@ class FlutterRouter {
 
   static const defaultTransitionDuration = Duration(milliseconds: 250);
 
-  RouteInterceptorBase? interceptor;
-  Map<String, FlutterPageBuilder> allPages = <String, FlutterPageBuilder>{};
+  static RouteInterceptorBase? interceptor;
+  static Map<String, FlutterPageBuilder> allPages = <String, FlutterPageBuilder>{};
 
-  void addInterceptor(RouteInterceptorBase interceptor) => this.interceptor = interceptor;
+  static addInterceptor(RouteInterceptorBase interceptor) => interceptor = interceptor;
 
-  void addPages(Map<String, FlutterPageBuilder> pages) => allPages.addAll(pages);
+  static void addPages(Map<String, FlutterPageBuilder> pages) => allPages.addAll(pages);
 
-  bool isValidRoute(String routeName) => allPages.containsKey(routeName);
+  static bool isValidRoute(String routeName) => allPages.containsKey(routeName);
 
-  Route<dynamic> _buildRoute(String routeName,
+  static Route<dynamic> _buildRoute(String routeName,
       {String? customName,
       Map<String, dynamic>? params,
       RouteTransitionType? transitionType,
@@ -50,7 +50,7 @@ class FlutterRouter {
     return pageRouteBuilder;
   }
 
-  Future<dynamic> push(BuildContext context, String routeName,
+  static Future<dynamic> push(BuildContext context, String routeName,
       {String? customName,
       Map<String, dynamic>? params,
       RouteTransitionType? transitionType,
@@ -76,7 +76,7 @@ class FlutterRouter {
     return Navigator.of(context).push(route);
   }
 
-  Future<dynamic> pushReplacement(BuildContext context, String routeName,
+  static Future<dynamic> pushReplacement(BuildContext context, String routeName,
       {String? customName,
       Map<String, dynamic>? params,
       RouteTransitionType? transitionType,
@@ -102,7 +102,7 @@ class FlutterRouter {
     return Navigator.of(context).pushReplacement(route);
   }
 
-  Future<dynamic> pushAndRemoveUntil(BuildContext context, String routeName, RoutePredicate predicate,
+  static Future<dynamic> pushAndRemoveUntil(BuildContext context, String routeName, RoutePredicate predicate,
       {String? customName,
       Map<String, dynamic>? params,
       RouteTransitionType? transitionType,

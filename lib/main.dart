@@ -124,7 +124,7 @@ class MyApp extends StatelessWidget {
                       theme: switchModeViewModel.themeMode == 1
                           ? ThemeData.dark()
                           : ThemeData(
-                              primarySwatch: Colors.blue,
+                              primarySwatch: Colors.blue, // 用于导航栏、FloatingActionButton的背景色等
                             ),
                       home: const SplashPage(),
                       builder: (context, child) {

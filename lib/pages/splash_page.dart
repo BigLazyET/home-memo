@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:home_memo/constants.dart';
 import 'package:home_memo/routes/router_controll.dart';
+import 'package:home_memo/routes/routes_union.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -19,6 +20,7 @@ class SplashPageState extends State<SplashPage> {
         // precheck: privacy，other permissions check
         // 跳转主页面
         _pushMainPage();
+        // 一般在这里可以进行隐私权益的处理
       });
     });
   }
@@ -46,6 +48,8 @@ class SplashPageState extends State<SplashPage> {
 
   _pushMainPage() {
     _initData();
+
+    RouteController.pushReplacement(context, RoutesUnion.MAIN_PAGE);
   }
 
   _initData() {
