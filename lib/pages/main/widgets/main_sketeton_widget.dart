@@ -13,10 +13,10 @@ class MainSkeletonWidget extends StatefulWidget {
 }
 
 class MainSkeletonWidgetState extends State<MainSkeletonWidget> with SingleTickerProviderStateMixin {
-  AnimationController? animationController;
-  Animation<double>? animation;
+  AnimationController? _animationController;
+  Animation<double>? _animation;
 
-  Color? color;
+  Color? _color;
 
   @override
   void initState() {
@@ -50,13 +50,13 @@ class MainSkeletonWidgetState extends State<MainSkeletonWidget> with SingleTicke
   }
 
   void _initAnimation() {
-    animationController = AnimationController(duration: const Duration(milliseconds: 1500), vsync: this);
-    animation = Tween<double>(begin: 0.04, end: 0.1).animate(animationController!);
-    animationController?.addStatusListener((status) {
+    _animationController = AnimationController(duration: const Duration(milliseconds: 1500), vsync: this);
+    _animation = Tween<double>(begin: 0.04, end: 0.1).animate(_animationController!);
+    _animationController?.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        animationController?.reverse();
+        _animationController?.reverse();
       } else if (status == AnimationStatus.dismissed) {
-        animationController?.forward();
+        _animationController?.forward();
       }
     });
   }
@@ -64,17 +64,24 @@ class MainSkeletonWidgetState extends State<MainSkeletonWidget> with SingleTicke
   void _doAfterFirstFrame() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       setState(() {
-        animationController?.forward();
-        color = AppColors.black;
+        _animationController?.forward();
+        _color = AppColors.black;
       });
     });
   }
 
   void _disposeAnimation() {
-    animationController?.dispose();
-    animationController = null;
-    animation = null;
+    _animationController?.dispose();
+    _animationController = null;
+    _animation = null;
   }
 
-  Widget _placeholderWidget() {}
+  Widget _placeholderWidget({double? width, double? height, Color? color, BorderRadiusGeometry? borderRadius}) {
+    return Container(
+      width: width,
+      height: height,
+      decoration:
+          BoxDecoration(color: color ?? _color, borderRadius: borderRadius ?? BorderRadius.all(Radius.circular(4.r))),
+    );
+  }
 }
