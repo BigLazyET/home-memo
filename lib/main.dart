@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:home_memo/base/page_base.dart';
 import 'package:home_memo/constants.dart';
 import 'package:home_memo/defines/colors.dart';
+import 'package:home_memo/defines/theme_extension_color.dart';
 import 'package:home_memo/pages/splash_page.dart';
 import 'package:home_memo/pages/test/my_home_page.dart';
 import 'package:home_memo/utils/localize_util.dart';
@@ -122,10 +123,12 @@ class MyApp extends StatelessWidget {
                       title: LocalUtil.get(AppLocalKeys.appTitle),
                       navigatorKey: appNavigatorKey,
                       theme: switchModeViewModel.themeMode == 1
-                          ? ThemeData.dark()
+                          ? ThemeData(
+                              brightness: Brightness.dark,
+                              extensions: const <ThemeExtension<dynamic>>[StatusColors.dark])
                           : ThemeData(
                               primarySwatch: Colors.blue, // 用于导航栏、FloatingActionButton的背景色等
-                            ),
+                              extensions: const <ThemeExtension<dynamic>>[StatusColors.light]),
                       home: const SplashPage(),
                       builder: (context, child) {
                         return Overlay(initialEntries: [

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:home_memo/base/page_base.dart';
 import 'package:home_memo/utils/log/log_util.dart';
 import 'package:provider/provider.dart';
 
 class MainPage extends StatefulPageWidget {
+  const MainPage({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return MainPageState();

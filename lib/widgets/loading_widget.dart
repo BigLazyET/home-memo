@@ -1,10 +1,8 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:home_memo/defines/colors.dart';
-import 'package:home_memo/utils/color_util.dart';
 
+// ignore: must_be_immutable
 class LoadingWidget extends StatefulWidget {
   double? width;
   double? height;
