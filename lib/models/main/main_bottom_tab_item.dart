@@ -23,7 +23,9 @@ class MainBottomTabItem {
   /// 角标文案
   String? cornerMark;
 
-  String? target; //跳转预留
+  /// page code
+  String? pageCode;
+
   /// id
   num? id;
 
@@ -35,6 +37,7 @@ class MainBottomTabItem {
     this.height,
     this.redirectUrl,
     this.cornerMark,
+    this.pageCode,
     this.id,
     required this.tabName,
   })  : assert(tabName.isNotEmpty),
@@ -48,6 +51,7 @@ class MainBottomTabItem {
     height = json["height"];
     redirectUrl = json["redirectUrl"];
     cornerMark = json["cornerMark"];
+    pageCode = json["pageCode"];
     id = json["id"];
     tabName = json["tabName"];
   }
@@ -62,6 +66,7 @@ class MainBottomTabItem {
     map["height"] = height;
     map["redirectUrl"] = redirectUrl;
     map["cornerMark"] = cornerMark;
+    map["pageCode"] = pageCode;
     map["id"] = id;
     map["tabName"] = tabName;
     return map;
@@ -69,6 +74,6 @@ class MainBottomTabItem {
 
   @override
   String toString() {
-    return "MainBottomTabItem clickEvent:$clickEvent, selectedImageUrl:$selectedImageUrl, unSelectImageUrl:$unSelectImageUrl, width:$width, height:$height, redirectUrl:$redirectUrl, cornerMark:$cornerMark, id:$id, tabName:$tabName";
+    return "MainBottomTabItem clickEvent:$clickEvent, selectedImageUrl:$selectedImageUrl, unSelectImageUrl:$unSelectImageUrl, width:$width, height:$height, redirectUrl:$redirectUrl, cornerMark:$cornerMark, pageCode:$pageCode, id:$id, tabName:$tabName";
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:home_memo/routes/flutter_router_manager.dart';
 import 'package:home_memo/routes/interceptors/route_interceptor_base.dart';
 import 'package:home_memo/routes/routes_union.dart';
 import 'package:home_memo/routes/transitions/route_transition_builder.dart';
@@ -11,16 +12,17 @@ class FlutterRouter {
 
   static const defaultTransitionDuration = Duration(milliseconds: 250);
 
-  static RouteInterceptorBase? interceptor;
-  static Map<String, FlutterPageBuilder> allPages = <String, FlutterPageBuilder>{};
+  RouteInterceptorBase? interceptor;
+  Map<String, FlutterPageBuilder> allPages = <String, FlutterPageBuilder>{};
+  FlutterRouterManager flutterRouterManager = FlutterRouterManager();
 
-  static addInterceptor(RouteInterceptorBase interceptor) => interceptor = interceptor;
+  addInterceptor(RouteInterceptorBase interceptor) => interceptor = interceptor;
 
-  static void addPages(Map<String, FlutterPageBuilder> pages) => allPages.addAll(pages);
+  void addPages(Map<String, FlutterPageBuilder> pages) => allPages.addAll(pages);
 
-  static bool isValidRoute(String routeName) => allPages.containsKey(routeName);
+  bool isValidRoute(String routeName) => allPages.containsKey(routeName);
 
-  static Route<dynamic> _buildRoute(String routeName,
+  Route<dynamic> _buildRoute(String routeName,
       {String? customName,
       Map<String, dynamic>? params,
       RouteTransitionType? transitionType,
@@ -50,7 +52,7 @@ class FlutterRouter {
     return pageRouteBuilder;
   }
 
-  static Future<dynamic> push(BuildContext context, String routeName,
+  Future<dynamic> push(BuildContext context, String routeName,
       {String? customName,
       Map<String, dynamic>? params,
       RouteTransitionType? transitionType,
@@ -76,7 +78,7 @@ class FlutterRouter {
     return Navigator.of(context).push(route);
   }
 
-  static Future<dynamic> pushReplacement(BuildContext context, String routeName,
+  Future<dynamic> pushReplacement(BuildContext context, String routeName,
       {String? customName,
       Map<String, dynamic>? params,
       RouteTransitionType? transitionType,
@@ -102,7 +104,7 @@ class FlutterRouter {
     return Navigator.of(context).pushReplacement(route);
   }
 
-  static Future<dynamic> pushAndRemoveUntil(BuildContext context, String routeName, RoutePredicate predicate,
+  Future<dynamic> pushAndRemoveUntil(BuildContext context, String routeName, RoutePredicate predicate,
       {String? customName,
       Map<String, dynamic>? params,
       RouteTransitionType? transitionType,
@@ -139,4 +141,6 @@ class FlutterRouter {
   }
 
   void removePage(BuildContext context, String routeName) {}
+
+  String currentRouteName() => flutterRouterManager.routeStack.keys.last;
 }

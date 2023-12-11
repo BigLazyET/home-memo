@@ -42,10 +42,24 @@ class MainSkeletonWidgetState extends State<MainSkeletonWidget> with SingleTicke
               width: double.infinity,
               fit: BoxFit.fill),
           Column(
-            children: [SizedBox(height: AppInfo.safeTopHeight + 60.r)],
+            children: [SizedBox(height: AppInfo.safeTopHeight + 60.r), _header()],
           )
         ],
       ),
+    );
+  }
+
+  _header() {
+    return Row(
+      children: [
+        SizedBox(width: 20.r),
+        _placeholderAnimationWidget(width: 114.r, height: 22.r),
+        const Expanded(child: SizedBox()),
+        _placeholderAnimationWidget(width: 24.r, height: 22.r),
+        SizedBox(width: 12.r),
+        _placeholderAnimationWidget(width: 80.r, height: 22.r),
+        SizedBox(width: 20.r)
+      ],
     );
   }
 
@@ -83,5 +97,17 @@ class MainSkeletonWidgetState extends State<MainSkeletonWidget> with SingleTicke
       decoration:
           BoxDecoration(color: color ?? _color, borderRadius: borderRadius ?? BorderRadius.all(Radius.circular(4.r))),
     );
+  }
+
+  Widget _placeholderAnimationWidget(
+      {double? width, double? height, Color? color, BorderRadiusGeometry? borderRadius}) {
+    return FadeTransition(
+        opacity: _animation!,
+        child: Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+              color: color ?? _color, borderRadius: borderRadius ?? BorderRadius.all(Radius.circular(4.r))),
+        ));
   }
 }

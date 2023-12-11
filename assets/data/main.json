@@ -1,0 +1,31 @@
+{
+  "name": "张三",
+  "age": 30,
+  "email": "zhangsan@example.com",
+  "tabItems": [
+    {
+      "tabName": "首页",
+      "clickEvent": "0",
+      "selectedImageUrl": "cli",
+      "unSelectImageUrl": "cli",
+      "width": 24,
+      "height": 24,
+      "redirectUrl": "cli",
+      "cornerMark": "cli",
+      "pageCode": "SY",
+      "id": 0
+    },
+    {
+      "tabName": "我的",
+      "clickEvent": "0",
+      "selectedImageUrl": "cli",
+      "unSelectImageUrl": "cli",
+      "width": 24,
+      "height": 24,
+      "redirectUrl": "cli",
+      "cornerMark": "cli",
+      "pageCode": "WD",
+      "id": 1
+    }
+  ]
+}

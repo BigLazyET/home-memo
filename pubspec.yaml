@@ -67,6 +67,18 @@ dependencies:
   # toast
   fluttertoast: ^8.2.4
 
+  # 设备信息
+  device_info_plus: ^9.1.1
+
+  # 机型映射
+  device_marketing_names: ^0.7.1
+
+  # app包信息
+  package_info_plus: ^4.2.0
+
+  # 下拉刷新和上拉加载
+  easy_refresh: ^3.3.2+4
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2

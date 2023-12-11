@@ -1,7 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:home_memo/constants.dart';
-import 'package:home_memo/routes/router_controll.dart';
+import 'package:home_memo/routes/router_facade.dart';
 import 'package:home_memo/routes/routes_union.dart';
 
 class SplashPage extends StatefulWidget {
@@ -49,11 +48,11 @@ class SplashPageState extends State<SplashPage> {
   _pushMainPage() {
     _initData();
 
-    RouteController.pushReplacement(context, RoutesUnion.MAIN_PAGE);
+    RouteFacade.instance.pushReplacement(context, RoutesUnion.MAIN_PAGE);
   }
 
   _initData() {
-    RouteController.RegistRoutes();
-    RouteController.RegistRouteInterceptors();
+    RouteFacade.instance.registRoutes();
+    RouteFacade.instance.registRouteInterceptors();
   }
 }
