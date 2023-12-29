@@ -76,8 +76,37 @@ _runApp() async {
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<StatefulWidget> createState() {
+    return MyAppState();
+  }
+}
+
+class MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    // 当平台亮度改变时，设置ThemeMode.system以使用系统主题
+    setState(() {
+      if (appNavigatorKey.currentContext != null) {
+        Provider.of<SwitchModeViewModel>(appNavigatorKey.currentContext!).setTheme(ThemeMode.system);
+      }
+    });
+  }
 
   // This widget is the root of your application.
   @override
@@ -122,13 +151,15 @@ class MyApp extends StatelessWidget {
                       navigatorObservers: [routeObserver],
                       title: LocalUtil.get(AppLocalKeys.appTitle),
                       navigatorKey: appNavigatorKey,
-                      theme: switchModeViewModel.themeMode == 1
-                          ? ThemeData(
-                              brightness: Brightness.dark,
-                              extensions: const <ThemeExtension<dynamic>>[StatusColors.dark])
-                          : ThemeData(
-                              primarySwatch: Colors.blue, // 用于导航栏、FloatingActionButton的背景色等
-                              extensions: const <ThemeExtension<dynamic>>[StatusColors.light]),
+                      theme: ThemeData(
+                          primarySwatch: Colors.blue, // 用于导航栏、FloatingActionButton的背景色等
+                          brightness: Brightness.light,
+                          extensions: const <ThemeExtension<dynamic>>[StatusColors.light]),
+                      darkTheme: ThemeData(
+                          primarySwatch: Colors.blue,
+                          brightness: Brightness.dark,
+                          extensions: const <ThemeExtension<dynamic>>[StatusColors.dark]),
+                      themeMode: switchModeViewModel.themeMode,
                       home: const SplashPage(),
                       builder: (context, child) {
                         return Overlay(initialEntries: [
